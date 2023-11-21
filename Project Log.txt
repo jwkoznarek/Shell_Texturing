@@ -1,0 +1,17 @@
+11-20-23
+I'm having a change of heart, and feel as it's in my best interest to pivot.
+So much of my time has been spent fitting the output of each ShellIndex into
+the index of a Texture2DArray that will then, in turn be assigned to each 
+instance of the object I want to shell texture. My new thought is this: Why
+not take out the middle man?
+
+┌─────┬──────────────────────────────────────────────────╖
+│ OLD │ GLSL TOP → Texture2DArray → Material → Instances ║
+├─────┼──────────────────────────────────────────────────╢
+│ NEW │           GLSL Material → Instances              ║
+╘═════╧══════════════════════════════════════════════════╝
+
+Here is the basis for further inquiry: 
+https://docs.derivative.ca/index.php?title=Write_a_GLSL_Material#Instance_Texturing
+
+Passing information between the vertex and pixel shader may or may not be needed.
