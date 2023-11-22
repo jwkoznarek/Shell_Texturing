@@ -15,3 +15,9 @@ Here is the basis for further inquiry:
 https://docs.derivative.ca/index.php?title=Write_a_GLSL_Material#Instance_Texturing
 
 Passing information between the vertex and pixel shader may or may not be needed.
+
+
+11-21-23
+It should be noted that the code I'm using is based heavily from code by GarretGunnel (aka Acerola).
+Repositiry - https://github.com/GarrettGunnell/Shell-Texturing
+Video Explination - https://www.youtube.com/watch?v=9dr-tRQzij4
