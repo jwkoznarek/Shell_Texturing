@@ -1,15 +1,7 @@
-// uniform float exampleUniform;
-
-//uniform int uShellIndex;
-uniform int uShellCount;
+uniform float uShellCount;
 uniform float uDensity;
-uniform float uNoiseMin, uNoiseMax;
+uniform vec2 uNoise;
 uniform float uThickness;
-
-uniform sampler2DArray name;
-
-float i;
-
 
 float hash(uint n){
 	n = (n << 13U) ^ n;
@@ -21,37 +13,14 @@ void main()
 {
 	vec3 newUV = vUV * uDensity;
 	vec3 localUV = fract(newUV) * 2 - 1;
-	float localDistanceFromCenter = length(localUV);
+	float localDistanceFromCenter = length(localUV.xy);
 	uvec3 tid = uvec3(newUV);
-	uint seed = tid.x + 100 * tid.y + 100 * 10;
-	float shellCount = uShellCount;
-	float rand = mix(uNoiseMin, uNoiseMax, hash(seed));
-	/*
-	float shellIndex = uShellIndex;
-	float h = shellIndex / shellCount;
+	uint seed = tid.x + 60 * tid.y + 100 * 10;
+	float rand = mix(uNoise.x, uNoise.y, hash(seed));
+	float h = uTDCurrentDepth / uShellCount;
 	bool outsideThickness = (localDistanceFromCenter) > (uThickness * (rand - h));
-	bool newShellIndex = uShellIndex > 0;
+	bool newShellIndex = uTDCurrentDepth > 0;
 	if (outsideThickness && newShellIndex) discard;
-	vec4 color = vec4(localUV, 1.0);
+	vec4 color = vec4(localUV.rg, 0.0, 1.0);
 	fragColor = TDOutputSwizzle(color);
-	*/
-
-	for (i = 0; i <= uShellCount; i++) {
-		/*
-		vec3 newUV = vUV * uDensity;
-		vec3 localUV = fract(newUV) * 2 - 1;
-		float localDistanceFromCenter = length(localUV);
-		uvec3 tid = uvec3(newUV);
-		uint seed = tid.x + 100 * tid.y + 100 * 10;
-		float shellCount = uShellCount;
-		float rand = mix(uNoiseMin, uNoiseMax, hash(seed));
-		*/
-		float shellIndex = i;
-		float h = shellIndex / shellCount;
-		bool outsideThickness = (localDistanceFromCenter) > (uThickness * (rand - h));
-		bool newShellIndex = shellIndex > 0;
-		if (outsideThickness && newShellIndex) discard;
-		vec4 color = vec4(localUV.rg, 0.0, 1.0);
-		fragColor = TDOutputSwizzle(color);
-	}
 }
