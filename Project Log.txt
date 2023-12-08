@@ -28,3 +28,9 @@ I've been deadlocked by this project since the 21st, but tonight I decided to st
 12-7-23
 Both issues have been solved, and the working code has been incorporated into the pixel shader.
 The next step is figuring out the vector aspect of the project, or wrapping my rectangular shell texture around a sphere.
+
+12-8-23
+There are some additional aspects of the project that I wanted to note:
+1. I would want to see if changing the shells from instances of geometry to a single geometry might improve performance and fidelity.
+2. I want to change the code to wipe and re-render the 2D texture array. Given point 1, I may or may not need to do this only for the 2D Texture Array version.
+3. I want to create parity between updates I'm making in this document and the repository itself by using the GitHub Issues and Roadmap feature. I don't want to keep coming back to this txt doc just to know what I'm doing lol.
