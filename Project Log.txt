@@ -24,3 +24,7 @@ Video Explination - https://www.youtube.com/watch?v=9dr-tRQzij4
 
 12-6-23
 I've been deadlocked by this project since the 21st, but tonight I decided to start from the most basic use case possible to A. figure out how to generate a proper 2D texture array with a GLSL top and B. trouble shoot an issue with the script where it would calculate taper in 3 dimentions instead of just 2. By starting with the smallest possible script that can produce a proper 2D texture array, and then follow that with the smallest shader that reproduced the taper bug, I was able to make a large amount of progress. Once I create a build that solves these two issues compeltely, I will update the repository.
+
+12-7-23
+Both issues have been solved, and the working code has been incorporated into the pixel shader.
+The next step is figuring out the vector aspect of the project, or wrapping my rectangular shell texture around a sphere.
