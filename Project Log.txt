@@ -34,3 +34,6 @@ There are some additional aspects of the project that I wanted to note:
 1. I would want to see if changing the shells from instances of geometry to a single geometry might improve performance and fidelity.
 2. I want to change the code to wipe and re-render the 2D texture array. Given point 1, I may or may not need to do this only for the 2D Texture Array version.
 3. I want to create parity between updates I'm making in this document and the repository itself by using the GitHub Issues and Roadmap feature. I don't want to keep coming back to this txt doc just to know what I'm doing lol.
+
+12-9-23
+A bit of progress was made with item 2 on the list from yesterday, but as pointed out in the issues, more work is needed to support constant changed to the shell texture, for example from an LFO. It's my opinion that this functionality of continuous changes should be supported, but I'm not going to be continuing to work on this issue until I work on item 1, geometry.
