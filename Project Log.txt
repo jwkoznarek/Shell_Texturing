@@ -44,3 +44,11 @@ First, if my goal is to make a geometric version of the GLSL script I have now, 
 Second, I want to add a bit more functionality to the script (I guess for both GLSL and now Python): that being to have more fine control of where the stacks of shells are. Features would include describing a grid with sides of independent length and randomly offsetting the rows and columns so that it breaks up the grid and looks a bit less uniform. Additionally, I would love to have finer control over the shapes of the shell sections themselves (whether circles, squares, whatever. Ideally, this would be described by a SOP input for the script to use and changed using TouchDesigner, since the Script SOP can take SOP inputs).
 Third, I would like to boil this whole project down into a more easily useable component. In it's current state using Geometry Instancing, there might be a way to output the actual Geometry being instanced, but it would be more obtuse than I would like. With the Script SOP, the whole script would live in SOP land without needing to cross over anywhere else.
 Fourth: I would love to have better support for non-grid shapes, most notably spheres. I saw a video yesterday about a UV unwrap-like effect achievable in TouchDesigner (https://www.youtube.com/watch?v=HPun50ej4W8), and thought that this could be integrated into the design. For example, the Script SOP could use the first input to pass the shape of the "strands" being passed though, and the second input could be the shape of the object being covered in "strands".
+
+12-20-23
+Took a stab at recreating the GLSL code in Python, and found it to be pretty successful as a pretty basic start, and the Python code has been added to the repository.
+A few issues that arose:
+1. The hashing function used doesn't seem to be easily transferrable from GLSL to Python. It'll have to involve some voodoo magic with hexadecimal and bitwise operators.
+2. Still need to define the grid the circles/shapes sit upon.
+3. Vectors seem to be absent from Python entirely, but this may not be an issue. Instead of things being calculated in screen space, everything is simply calculated in physical space. It should be easy to convert, but it isn't going to look anything like it did when we started.
+4. A list of needed features is being added to issues so that I can easily track progress.
