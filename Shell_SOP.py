@@ -97,9 +97,9 @@ def onCook(op):
 					p = op.appendPoint()
 					h = i / hseg + (radius / 10)
 					newRadius = 4 * (csize - h) # size should be normalized between 0 and 1 for additional shells
-					p.x = math.cos(math.pi * 2 * j / rseg) * newRadius + (k * dist) + l
+					p.x = math.cos(math.pi * 2 * j / rseg) * newRadius + (k * dist)
 					p.y = i * (sdist * 0.1)
-					p.z = math.sin(math.pi * 2 * j / rseg) * newRadius + k + (l * dist)
+					p.z = math.sin(math.pi * 2 * j / rseg) * newRadius + (l * dist)
   ################
   # PRIMITIVE CALC
   ################
