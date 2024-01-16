@@ -85,21 +85,23 @@ def onCook(op):
 	Densityz = op.par.Densityz.eval()
 	Densityx = op.par.Densityx.eval()
 	dist = op.par.Distance.eval()
+	stepsize = (Fdeg * csize ) / (Shellnum - 1)
 
   ############
   # POINT CALC
   ############
+	
   
 	for l in range(Densityz):
 		for k in range(Densityx):
 			for i in range(Shellnum):
 				for j in range(rseg - 1, -1, -1):
 					p = op.appendPoint()
-					h = i / Shellnum
-					newRadius = (csize - (h - (Fdeg * h)))
+					newRadius = csize - (stepsize * i)
 					p.x = math.cos(math.pi * 2 * j / rseg) * newRadius + (k * dist)
 					p.y = i * (sdist * 0.1)
 					p.z = math.sin(math.pi * 2 * j / rseg) * newRadius + (l * dist)
+					print('i ' + str(i) + ' | Fdeg ' + str(Fdeg))
   ################
   # PRIMITIVE CALC
   ################
