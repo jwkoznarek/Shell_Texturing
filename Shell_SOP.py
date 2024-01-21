@@ -10,7 +10,7 @@ def onSetupParameters(op):
 	p.clampMin = True
 	p.clampMax = True
 	
-	p = page.appendInt('Radial', label='Radial Segments')[0]
+	p = page.appendInt('Radialsegments', label='Radial Segments')[0]
 	p.min = 1
 	p.max = 50
 	p.normMin = p.min
@@ -18,7 +18,7 @@ def onSetupParameters(op):
 	p.clampMin = True
 	p.clampMax = True
 	
-	p = page.appendFloat('Fdeg', label='Top Shell Max Size')[0]
+	p = page.appendFloat('Topshellmaxsize', label='Top Shell Max Size')[0]
 	p.min = 0.0
 	p.max = 1.0
 	p.normMin = p.min
@@ -26,7 +26,7 @@ def onSetupParameters(op):
 	p.clampMin = True
 	p.clampMax = True
 
-	p = page.appendFloat('Shelldist', label='Shell Distance')[0]
+	p = page.appendFloat('Height', label='Shape Height')[0]
 	p.min = 1
 	p.max = 50
 	p.normMin = p.min
@@ -48,7 +48,7 @@ def onSetupParameters(op):
 	p.normMin = p.min
 	p.normMax = p.max
 	p.clampMin = True
-	p.clampMax = True
+	p.clampMax = False
 
 	p = page.appendInt('Densityx', label='Columns (x)')[0]
 	p.min = 1
@@ -77,15 +77,16 @@ def onCook(op):
 	op.clear()
 
 	# Applies parameters to variables
-	rseg = op.par.Radial.eval()
-	Fdeg = op.par.Fdeg.eval()
+	radseg = op.par.Radialsegments.eval()
+	topsize = op.par.Topshellmaxsize.eval()
 	Shellnum = op.par.Shellnum.eval()
-	sdist = op.par.Shelldist.eval()
-	csize = op.par.Conesize.eval()
+	height = op.par.Height.eval()
+	size = op.par.Conesize.eval()
 	Densityz = op.par.Densityz.eval()
 	Densityx = op.par.Densityx.eval()
 	dist = op.par.Distance.eval()
-	stepsize = (Fdeg * csize ) / (Shellnum - 1)
+	stepsize = (topsize * size) / (Shellnum - 1)
+	heightstep = height / (Shellnum - 1)
 
   ############
   # POINT CALC
@@ -95,23 +96,24 @@ def onCook(op):
 	for l in range(Densityz):
 		for k in range(Densityx):
 			for i in range(Shellnum):
-				for j in range(rseg - 1, -1, -1):
+				newHeight = i * heightstep
+				for j in range(radseg - 1, -1, -1):
 					p = op.appendPoint()
-					newRadius = csize - (stepsize * i)
-					p.x = math.cos(math.pi * 2 * j / rseg) * newRadius + (k * dist)
-					p.y = i * (sdist * 0.1)
-					p.z = math.sin(math.pi * 2 * j / rseg) * newRadius + (l * dist)
-					print('i ' + str(i) + ' | Fdeg ' + str(Fdeg))
+					newRadius = size - (stepsize * i)
+					p.x = math.cos(math.pi * 2 * j / radseg) * newRadius + (k * dist)
+					p.y = newHeight
+					p.z = math.sin(math.pi * 2 * j / radseg) * newRadius + (l * dist)
+
   ################
   # PRIMITIVE CALC
   ################
   
 	total = int(Shellnum * Densityx * Densityz)
 	for i in range(total):
-		poly = op.appendPoly(rseg, closed=True, addPoints=False)
-		for j in range(rseg):
-			n = j + (i * rseg)
+		poly = op.appendPoly(radseg, closed=True, addPoints=False)
+		for j in range(radseg):
+			n = j + (i * radseg)
 			poly[j].point = op.points[n]
 		
-	print('points ' + str(i * rseg) + ' polygons: ' + str(i))
+	print('points ' + str(i * radseg) + ' polygons: ' + str(i))
 	return
