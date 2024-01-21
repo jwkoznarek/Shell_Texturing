@@ -3,7 +3,7 @@ def onSetupParameters(op):
 	page = op.appendCustomPage('Custom')
 
 	p = page.appendInt('Shellnum', label='Shell Count')[0]
-	p.min = 1
+	p.min = 2
 	p.max = 50
 	p.normMin = p.min
 	p.normMax = p.max
@@ -66,6 +66,9 @@ def onSetupParameters(op):
 	p.clampMin = True
 	p.clampMax = True
 
+	p = page.appendToggle('Normals', label='Compute Normals')[0]
+
+
 	return
 
 def onPulse(par):
@@ -85,6 +88,8 @@ def onCook(op):
 	Densityz = op.par.Densityz.eval()
 	Densityx = op.par.Densityx.eval()
 	dist = op.par.Distance.eval()
+	norm = op.par.Normals
+
 	stepsize = (topsize * size) / (Shellnum - 1)
 	heightstep = height / (Shellnum - 1)
 
@@ -92,7 +97,7 @@ def onCook(op):
   # POINT CALC
   ############
 	
-  
+	# calculates where each point goes
 	for l in range(Densityz):
 		for k in range(Densityx):
 			for i in range(Shellnum):
@@ -104,16 +109,47 @@ def onCook(op):
 					p.y = newHeight
 					p.z = math.sin(math.pi * 2 * j / radseg) * newRadius + (l * dist)
 
+					# applies point normals to each point
+					if (norm):
+						op.pointAttribs.create('N')
+						p.N = (0, 1, 0)
+	
+
   ################
   # PRIMITIVE CALC
   ################
-  
+
+	# this ineligant monstrosity splits each of the "shell plates" into triangles
+	# and draws primatives accordingly
 	total = int(Shellnum * Densityx * Densityz)
 	for i in range(total):
-		poly = op.appendPoly(radseg, closed=True, addPoints=False)
-		for j in range(radseg):
-			n = j + (i * radseg)
-			poly[j].point = op.points[n]
+		for j in range(radseg - 2):
+			pt1 = j + 1
+			if (radseg % 2 and pt1 < (radseg/2)):
+				pt2 = pt1 - 1
+				pt3 = (radseg - 1) - j
+			elif (pt1 < (radseg/2)):
+				pt2 = pt1 - 1
+				pt3 = (radseg - 1) - j
+			elif (pt1 == (radseg/2)):
+				pt2 = pt1 - 1
+				pt3 = pt3
+			else:
+				if (radseg % 2):
+					pt2 = pt2
+					pt3 = pt3 + 1
+				else:
+					pt2 = pt2 - 1
+					pt3 = pt3 + 1
+			apt1 = int(pt1 + (i * radseg))
+			apt2 = int(pt2 + (i * radseg))
+			apt3 = int(pt3 + (i * radseg))
+			poly = op.appendPoly(3, closed=True, addPoints=False)
+			poly[0].point = op.points[apt3]
+			poly[1].point = op.points[apt2]
+			poly[2].point = op.points[apt1]
+			if (pt1 > (radseg/2)):
+				if (radseg % 2):
+					pt2 = pt2 - 1
 		
-	print('points ' + str(i * radseg) + ' polygons: ' + str(i))
 	return
